@@ -20,14 +20,9 @@ class WebsiteTableSeeder extends Seeder
         // let's hash it before the loop, or else our seeder 
         // will be too slow.
 
-        Website::create([
-            'website_url' => 'https://test.com',
-            'website_title' => 'Test Website',
-
-        ]);
 
         // And now let's generate a few dozen users for our app:
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 6; $i < 10; $i++) {
             Website::create([
                 'website_title' => $faker->name,
                 'website_url' => $faker->url,

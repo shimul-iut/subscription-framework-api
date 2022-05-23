@@ -51,8 +51,30 @@ class PostController extends Controller
             'website_id' => $request->input('website_id'),
         ]);
 
-        Cache::put('posts', $post);
+        Cache::put('posts', Post::all());
 
+        
+        $subscribers = Cache::get('subscribers')->where('website_id' , $post->website_id)->collect();
+ 
+        if(count($subscribers) > 0){
+            foreach($subscribers as $sub){
+                //Idea is to set a flag in subscriber table with the last emailed post id to prevent duplicacy. 
+                // This can be improved by using a cached table, but that seemed out of the scope for the moement.
+                if($sub->prev_notified_post_id != $post->website_id){
+
+                    $details['email'] = $sub->user->email;
+                    $details['title'] = $post->post_title;
+                    $details['body'] = $post->post_body;
+                    
+                    dispatch(new App\Jobs\SendEmailJob($details));
+                    
+
+                    //Updating the flag once the mail is dispatched for the particular post
+                    $sub->prev_notified_post_id =   $post->id;
+                    $sub->save();
+                }
+            }
+        }   
         return new PostResource($post);
     }
 

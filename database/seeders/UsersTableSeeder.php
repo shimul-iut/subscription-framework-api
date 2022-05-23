@@ -22,16 +22,10 @@ class UsersTableSeeder extends Seeder
         // Let's make sure everyone has the same password and 
         // let's hash it before the loop, or else our seeder 
         // will be too slow.
-        $password = Hash::make('dummy');
-
-        User::create([
-            'name' => 'User1',
-            'email' => 'user@test.com',
-            'password' => $password,
-        ]);
+        $password = Hash::make('dummy');;
 
         // And now let's generate a few dozen users for our app:
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 6; $i < 10; $i++) {
             User::create([
                 'name' => $faker->name,
                 'email' => $faker->email,

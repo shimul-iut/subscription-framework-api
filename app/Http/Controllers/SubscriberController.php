@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateSubscriberRequest;
 use App\Http\Resources\SubscriberResource;
 use App\Models\Subscriber;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class SubscriberController extends Controller
 {
@@ -17,8 +18,11 @@ class SubscriberController extends Controller
      */
     public function index()
     {
-        //
+        $subscribers = Cache::get('subscribers');
+        // /$subscribers = Subscriber::all();
+        return $subscribers;
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -46,6 +50,8 @@ class SubscriberController extends Controller
             'website_id' => $request->input('website_id'),
         ]);
 
+        Cache::put('subscribers', Subscriber::all());
+        
         return new SubscriberResource($subscribe);
     }
 

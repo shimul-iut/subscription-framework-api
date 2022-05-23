@@ -24,9 +24,11 @@ Route::group(['prefix' => 'api'], function() {
     
     Route::get('posts', [PostController::class, 'index']);
 
+    Route::get('subscribers', [SubscriberController::class, 'index']);
+
     Route::post('posts/create', [PostController::class, 'store']);
 
-    Route::post('user/subscribe', [SubscriberController::class, 'store']);
+    Route::post('users/subscribe', [SubscriberController::class, 'store']);
 });
 
 // Route::get('/token', function () {
