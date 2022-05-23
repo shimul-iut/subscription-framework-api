@@ -7,6 +7,7 @@ use App\Models\Website;
 use Illuminate\Http\Request;
 use App\Http\Resources\PostResource;
 use App\Http\Requests\StorePostRequest;
+use Illuminate\Support\Facades\Cache;
 
 
 class PostController extends Controller
@@ -18,7 +19,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+
+        $posts = Cache::get('posts');
+        //$posts = Post::all();
+        return $posts;
     }
 
     /**
@@ -46,6 +50,8 @@ class PostController extends Controller
             'post_body' => $request->input('body'),
             'website_id' => $request->input('website_id'),
         ]);
+
+        Cache::put('posts', $post);
 
         return new PostResource($post);
     }

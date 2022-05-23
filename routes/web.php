@@ -20,10 +20,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('api/posts/create', [PostController::class, 'store']);
+Route::group(['prefix' => 'api'], function() {
+    
+    Route::get('posts', [PostController::class, 'index']);
 
-Route::post('api/user/subscribe', [SubscriberController::class, 'store']);
+    Route::post('posts/create', [PostController::class, 'store']);
 
+    Route::post('user/subscribe', [SubscriberController::class, 'store']);
+});
 
 // Route::get('/token', function () {
 //     return csrf_token(); 
